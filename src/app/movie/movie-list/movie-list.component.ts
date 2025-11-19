@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Movie } from '../Movie';
-import { moviesData } from '../moviesData';
+import { MovieService } from '../movie.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -10,15 +11,23 @@ import { moviesData } from '../moviesData';
 })
 export class MovieListComponent implements OnInit {
   movies: Movie[] = [];
-  selected: Boolean = false;
-  selectedMovie: Movie | null = null;
 
-  onSelect(movie: Movie) {
-    this.selectedMovie = movie;
-    this.selected = true;
+  constructor(
+    private movieService: MovieService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.getMovies();
   }
 
-  ngOnInit() {
-    this.movies = moviesData;
+  getMovies(): void {
+    this.movieService.getMovies().subscribe((data: Movie[]) => {
+      this.movies = data;
+    });
+  }
+
+  goToDetail(movie: Movie): void {
+    this.router.navigate(['/movies', movie.id]);
   }
 }
