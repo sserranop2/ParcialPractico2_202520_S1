@@ -11,10 +11,7 @@
     </tr>
 
     @for (movie of movies; track movie.id) {
-      <tr
-        [routerLink]="['/movies', movie.id]"
-        style="cursor: pointer"
-      >
+      <tr (click)="goToDetail(movie)">
         <td>
           <b>{{ movie.title }}</b>
         </td>
